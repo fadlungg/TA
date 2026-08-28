@@ -2,16 +2,19 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class AuthFlowTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Test login page renders successfully.
      */
     public function test_login_page_renders_successfully(): void
     {
-        $response = $this->get('/');
+        $response = $this->get('/login');
 
         $response->assertStatus(200);
         $response->assertSee('sipektatu');
@@ -50,7 +53,7 @@ class AuthFlowTest extends TestCase
     {
         $response = $this->get('/dashboard');
 
-        $response->assertRedirect('/');
+        $response->assertRedirect('/login');
         $response->assertSessionHas('error');
     }
 
@@ -79,7 +82,7 @@ class AuthFlowTest extends TestCase
             'admin_username' => 'sipektatu',
         ])->post('/logout');
 
-        $response->assertRedirect('/');
+        $response->assertRedirect('/login');
         $this->assertNull(session('admin_logged_in'));
         $this->assertNull(session('admin_username'));
     }

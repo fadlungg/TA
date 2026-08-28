@@ -10,8 +10,11 @@ use App\Http\Middleware\VerifyAdminSession;
 use Illuminate\Support\Facades\Route;
 
 // Guest Routes
-Route::get('/', [AuthController::class, 'login'])->name('login');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'loginAction'])->name('login.action');
+Route::get('/', function () {
+    return redirect()->route('dashboard');
+});
 
 // Authenticated Routes
 Route::middleware([VerifyAdminSession::class])->group(function () {
